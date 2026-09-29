@@ -1,4 +1,7 @@
 import CollectionPage from './CollectionPage.jsx'
+import { buildApiUrl } from '../api.js'
+
+const endpoint = buildApiUrl('teams', '-8000.app.github.dev/api/teams/')
 
 const columns = [
   { heading: 'Team', key: 'name' },
@@ -11,7 +14,7 @@ export default function Teams() {
     <CollectionPage
       columns={columns}
       description="Training groups and their members."
-      endpoint="teams"
+      endpoint={endpoint}
       title="Teams"
     />
   )

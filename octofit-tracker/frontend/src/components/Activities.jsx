@@ -1,4 +1,7 @@
 import CollectionPage from './CollectionPage.jsx'
+import { buildApiUrl } from '../api.js'
+
+const endpoint = buildApiUrl('activities', '-8000.app.github.dev/api/activities/')
 
 const columns = [
   { heading: 'Activity', key: 'type' },
@@ -16,7 +19,7 @@ export default function Activities() {
     <CollectionPage
       columns={columns}
       description="Recent movement logged by OctoFit members."
-      endpoint="activities"
+      endpoint={endpoint}
       title="Activities"
     />
   )

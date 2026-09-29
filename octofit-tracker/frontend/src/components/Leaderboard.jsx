@@ -1,4 +1,7 @@
 import CollectionPage from './CollectionPage.jsx'
+import { buildApiUrl } from '../api.js'
+
+const endpoint = buildApiUrl('leaderboard', '-8000.app.github.dev/api/leaderboard/')
 
 const columns = [
   { heading: 'Rank', render: (_entry, index) => `#${index + 1}` },
@@ -12,7 +15,7 @@ export default function Leaderboard() {
     <CollectionPage
       columns={columns}
       description="Compare points earned across the community."
-      endpoint="leaderboard"
+      endpoint={endpoint}
       title="Leaderboard"
     />
   )

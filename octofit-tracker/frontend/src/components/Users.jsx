@@ -1,4 +1,7 @@
 import CollectionPage from './CollectionPage.jsx'
+import { buildApiUrl } from '../api.js'
+
+const endpoint = buildApiUrl('users', '-8000.app.github.dev/api/users/')
 
 const columns = [
   { heading: 'Member', render: (user) => user.displayName || user.username || '—' },
@@ -11,7 +14,7 @@ export default function Users() {
     <CollectionPage
       columns={columns}
       description="Profiles registered with OctoFit Tracker."
-      endpoint="users"
+      endpoint={endpoint}
       title="Users"
     />
   )
