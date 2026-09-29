@@ -1,73 +1,50 @@
-import { useEffect, useState } from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
+import { API_TARGET } from './api.js'
 import './App.css'
 
-function Dashboard() {
-  const [databaseStatus, setDatabaseStatus] = useState('checking')
-
-  useEffect(() => {
-    let active = true
-
-    fetch('/api/health')
-      .then((response) => response.json())
-      .then((health) => {
-        if (active) setDatabaseStatus(health.database)
-      })
-      .catch(() => {
-        if (active) setDatabaseStatus('unavailable')
-      })
-
-    return () => {
-      active = false
-    }
-  }, [])
-
-  return (
-    <main className="container py-5">
-      <header className="d-flex align-items-center gap-3 mb-5">
-        <img className="brand-mark" src="/octofitapp-small.png" alt="" />
-        <div>
-          <p className="text-uppercase small fw-semibold mb-1">OctoFit Tracker</p>
-          <h1 className="h2 mb-0">Your movement, in one place.</h1>
-        </div>
-      </header>
-
-      <section aria-labelledby="system-status-heading" className="status-panel p-4">
-        <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
-          <div>
-            <p className="text-uppercase small fw-semibold mb-2">Workspace</p>
-            <h2 id="system-status-heading" className="h4 mb-1">
-              Service status
-            </h2>
-            <p className="text-secondary mb-0">
-              The tracker is ready for your teams, activities, and workouts.
-            </p>
-          </div>
-          <span className="status-pill">
-            <span className={`status-dot status-${databaseStatus}`} aria-hidden="true" />
-            Database {databaseStatus}
-          </span>
-        </div>
-      </section>
-    </main>
-  )
-}
-
-function NotFound() {
-  return (
-    <main className="container py-5">
-      <h1 className="h2">Page not found</h1>
-      <Link to="/">Return to overview</Link>
-    </main>
-  )
-}
+const navigationItems = [
+  { label: 'Activities', path: '/activities' },
+  { label: 'Leaderboard', path: '/leaderboard' },
+  { label: 'Teams', path: '/teams' },
+  { label: 'Users', path: '/users' },
+  { label: 'Workouts', path: '/workouts' },
+]
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <div className="app-shell">
+      <header className="app-header">
+        <div className="app-header-inner">
+          <div className="app-brand-row">
+            <Link className="app-brand" to="/activities" aria-label="OctoFit Tracker home">
+              <img src="/octofitapp-small.png" alt="" />
+              <span>OctoFit Tracker</span>
+            </Link>
+            <span className="api-target">API / {API_TARGET}</span>
+          </div>
+          <nav className="app-nav" aria-label="Main navigation">
+            {navigationItems.map((item) => (
+              <NavLink
+                className={({ isActive }) => `app-nav-link${isActive ? ' active' : ''}`}
+                key={item.path}
+                to={item.path}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      <div className="app-main">
+        <Outlet />
+      </div>
+
+      <footer className="app-footer">
+        <span>OctoFit Tracker</span>
+        <span>Movement, measured together.</span>
+      </footer>
+    </div>
   )
 }
 
